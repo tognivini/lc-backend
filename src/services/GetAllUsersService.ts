@@ -1,9 +1,9 @@
 import { getRepository } from "typeorm";
-import { User } from "../models/User";
+import { UserModel } from "../models/UserModel";
 
 export class GetAllUsersService {
   async execute() {
-    const repo = getRepository(User);
+    const repo = getRepository(UserModel);
 
     const users = await repo.find()
 
