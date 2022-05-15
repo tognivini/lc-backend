@@ -1,18 +1,25 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
+import { Entity, Column } from "typeorm";
+import { PermissionTypeEnum } from "../domain/enums/userEnums/_index";
+import { ModelBase } from "./base/ModelBase";
 
-@Entity()
-export class User {
+@Entity("user")
+export class User extends ModelBase {
+  @Column({ name: "email", nullable: false })
+  email: string;
 
-    @PrimaryGeneratedColumn()
-    id: number
+  @Column({ name: "phone_number", nullable: false })
+  phoneNumber: string;
 
-    @Column()
-    firstName: string
+  @Column({ name: "name", nullable: false })
+  name: number;
 
-    @Column()
-    lastName: string
+  @Column({ name: "type_person", nullable: false })
+  password: string;
 
-    @Column()
-    age: number
-
+  @Column({
+    type: "varchar",
+    nullable: true,
+    name: "permission",
+  })
+  permission: PermissionTypeEnum;
 }
