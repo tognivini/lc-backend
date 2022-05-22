@@ -1,5 +1,6 @@
+//não está mais sendo usado
 import { Router, Request, Response } from "express"
-import { GetAllUsersController } from "./controller/GetAllUsersController"
+import { GetAllUsersController } from "./controllers/GetAllUsersController"
 
 const routes = Router()
 
