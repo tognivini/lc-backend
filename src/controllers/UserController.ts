@@ -1,5 +1,5 @@
 import * as express from "express";
-// import { Request, Response } from 'express'
+import { Request, Response } from 'express'
 import { inject } from "inversify";
 import {
   controller,
@@ -12,7 +12,7 @@ import {
 } from "inversify-express-utils";
 
 import { GetAllUsersDto } from "../application/dto/userDto/_index";
-import { IGetAllUsersUseCase } from "../domain/interfaces/useCases/user/_index";
+import { ICreateUserUseCase, IGetAllUsersUseCase } from "../domain/interfaces/useCases/user/_index";
 import { TYPES_USER } from "../main/inversify/types";
 // import { RequestFilter } from '../../utils/commons/helpers/protocols/Http'
 // import { AUTHORIZATION } from '../../utils/commons/resources/constants/AuthorizationScopes'
@@ -23,7 +23,10 @@ import { TYPES_USER } from "../main/inversify/types";
 export class UserController {
   constructor(
     @inject(TYPES_USER.IGetAllUsersUseCase)
-    private _getAllUsers: IGetAllUsersUseCase
+    private _getAllUsers: IGetAllUsersUseCase,
+
+    @inject(TYPES_USER.ICreateUserUseCase)
+    private _createUser: ICreateUserUseCase
   ) {}
   
   @httpGet("/")
@@ -32,12 +35,21 @@ export class UserController {
     @response() res: express.Response
     ) {
       try {
-      console.log("___entrando controller -> function getAll___");
-      return await this._getAllUsers.execute(req.query);
+        return await this._getAllUsers.execute(req.query);
     } catch (error) {
       return error;
     }
   }
+
+  @httpPost('/create')
+  private async create(@request() req: Request, @response() res: Response) {
+    try {
+      return await this._createUser.execute(req.body)
+    } catch (error) {
+      return error
+    }
+  }
+
 
   // @httpGet('/', (''))
   // private async getAll(

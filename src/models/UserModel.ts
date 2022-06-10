@@ -12,22 +12,9 @@ export class UserModel extends ModelBase {
   phoneNumber: string;
 
   @Column({ name: "name", nullable: false })
-  name: number;
+  name: string;
 
-  @Column({ name: "type_person", nullable: false })
+  @Column({ name: "password", nullable: false })
   password: string;
-
-  // @OneToOne(
-  //   () => PermissionsModel,
-  //   (Permissions) => Permissions.user
-  // )
-  // permissions: PermissionsModel
-  // //criar relação com tabela permissao
-  // @Column({
-  //   type: "varchar",
-  //   nullable: true,
-  //   name: "permission",
-  // })
-  // permission: PermissionTypeEnum;
 }
 
