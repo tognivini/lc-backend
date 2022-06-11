@@ -1,4 +1,4 @@
-import { UserModel } from './../../../models/UserModel';
+import { UserModel } from './../../../models/_index';
 import { inject, injectable } from 'inversify'
 
 import { UpdateUserDto } from '../../../application/dto/userDto/_index'
