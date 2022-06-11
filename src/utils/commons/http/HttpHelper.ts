@@ -63,6 +63,15 @@ export const ok = <TObject = any>(
   messages: [message],
 })
 
+export const okNoDataToReturn = <TObject = any>(
+  message: string = null
+): HttpResponse<TObject> => ({
+  success: true,
+  statusCode: 200,
+  data: null,
+  messages: [message],
+})
+
 export const noContent = (): HttpResponse => ({
   success: true,
   statusCode: 204,

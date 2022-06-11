@@ -6,7 +6,8 @@ import { TYPES_USER } from './types.user'
 import { 
   GetAllUsersUseCase, 
   CreateUserUseCase, 
-  UpdateUserUseCase 
+  UpdateUserUseCase, 
+  DeleteUserUseCase
 } from '../../../application/useCases/user/_index'
 
 export const bindingsUser = new ContainerModule((bind) => {
@@ -28,4 +29,6 @@ export const bindingsUser = new ContainerModule((bind) => {
   )
 
   bind<CreateUserUseCase>(TYPES_USER.ICreateUserUseCase).to(CreateUserUseCase)
+
+  bind<DeleteUserUseCase>(TYPES_USER.IDeleteUserUseCase).to(DeleteUserUseCase)
 })

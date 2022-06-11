@@ -11,9 +11,8 @@ import {
   response,
 } from "inversify-express-utils";
 
-import { GetAllUsersDto } from "../application/dto/userDto/_index";
 import { IUpdateUserUseCase } from "../domain/interfaces/useCases/user/IUpdateUserUseCase";
-import { ICreateUserUseCase, IGetAllUsersUseCase } from "../domain/interfaces/useCases/user/_index";
+import { ICreateUserUseCase, IDeleteUserUseCase, IGetAllUsersUseCase } from "../domain/interfaces/useCases/user/_index";
 import { TYPES_USER } from "../main/inversify/types";
 // import { RequestFilter } from '../../utils/commons/helpers/protocols/Http'
 // import { AUTHORIZATION } from '../../utils/commons/resources/constants/AuthorizationScopes'
@@ -31,6 +30,10 @@ export class UserController {
 
     @inject(TYPES_USER.IUpdateUserUseCase)
     private _updateUser: IUpdateUserUseCase,
+
+    @inject(TYPES_USER.IDeleteUserUseCase)
+    private _deleteUser: IDeleteUserUseCase,
+
   ) {}
   
   @httpGet("/")
@@ -65,6 +68,16 @@ export class UserController {
     }
   }
 
+  @httpDelete('/delete/:id')
+  private async delete(@request() req: Request, @response() res: Response) {
+    try {
+      const { id } = req.params
+      return await this._deleteUser.execute(id)
+    } catch (error) {
+      return error
+    }
+  }
+
 
   // @httpGet('/', (''))
   // private async getAll(
@@ -80,41 +93,5 @@ export class UserController {
   //     return new (res).adaptError(error)
   //   }
   // }
-
-  // @httpGet('/', authorization(AUTHORIZATION.KM_TRAVELED.READ))
-  // private async getAll(
-  //   @request() req: RequestFilter<GetAllUsersDto>,
-  //   @response() res: Response
-  // ) {
-  //   try {
-  //     return new AdaptResponse(res).adaptQuery(
-  //       await this._getAllUsers.execute(req.query)
-  //     )
-  //   } catch (error) {
-  //     return new AdaptResponse(res).adaptError(error)
-  //   }
-  // }
-
-  // @httpPut('/:id', authorization(AUTHORIZATION.KM_TRAVELED.EDIT))
-  // private async update(@request() req: Request, @response() res: Response) {
-  //   try {
-  //     const { id } = req.params
-  //     return new AdaptResponse(res).adapt(
-  //       await this._updateKmTraveled.execute(id, req.body)
-  //     )
-  //   } catch (error) {
-  //     return new AdaptResponse(res).adaptError(error)
-  //   }
-  // }
-
-  // @httpDelete('/', authorization(AUTHORIZATION.KM_TRAVELED.DELETE))
-  // private async delete(@request() req: Request, @response() res: Response) {
-  //   try {
-  //     return new AdaptResponse(res).adapt(
-  //       await this._deleteKmTraveled.execute(req.body)
-  //     )
-  //   } catch (error) {
-  //     return new AdaptResponse(res).adaptError(error)
-  //   }
-  // }
+ 
 }

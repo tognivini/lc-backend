@@ -1,13 +1,11 @@
 import { injectable } from "inversify";
 import { getRepository, SelectQueryBuilder, UpdateResult } from "typeorm";
-// import { getConnection } from 'typeorm'
 
 import { GetAllUsersDto } from "../../application/dto/userDto/_index";
 import { StatusEnum } from "../../domain/enums/baseEnums/_index";
 import { IUserRepository } from "../../domain/interfaces/repositories/database/IUserRepository";
 import { UserModel } from "../../models/_index";
 import { DateUtils } from "../../utils/commons/utils/_index";
-// import { DateUtils } from '../../../utils/commons/utils/_index'
 
 @injectable()
 export class UserRepository implements IUserRepository {
@@ -20,7 +18,15 @@ export class UserRepository implements IUserRepository {
     return await this.findUserCustom(<UserModel>{ id: id });
   }
 
-  
+  async findUserCustom(filter: UserModel): Promise<UserModel> {
+    const query = getRepository(UserModel).createQueryBuilder("user");
+
+    query.where(filter);
+    query.andWhere("user.status = :status", {
+      status: StatusEnum.ATIVO,
+    });
+    return await query.getOne();
+  }
 
   async add(model: UserModel): Promise<UserModel> {
     const repo = getRepository(UserModel);
@@ -39,14 +45,9 @@ export class UserRepository implements IUserRepository {
     // });
   }
 
-  async findUserCustom(filter: UserModel): Promise<UserModel> {
-    const query = getRepository(UserModel).createQueryBuilder("user");
-
-    query.where(filter);
-    query.andWhere("user.status = :status", {
-      status: StatusEnum.ATIVO,
-    });
-    return await query.getOne();
+  async delete(id: string): Promise<void> {
+    const repo = getRepository(UserModel)
+    await repo.delete(id)
   }
 
   async getAllPagging(request: GetAllUsersDto): Promise<UserModel[]> {
