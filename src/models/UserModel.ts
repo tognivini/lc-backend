@@ -2,6 +2,9 @@ import { PermissionsModel } from './PermissionsModel';
 import { Entity, Column, OneToOne } from "typeorm";
 import { PermissionTypeEnum } from "../domain/enums/userEnums/_index";
 import { ModelBase } from "./base/ModelBase";
+import { EncryptionTransformer } from "typeorm-encrypted";
+import { MyEncryptionTransformerConfig } from './base/encryption-config'
+
 
 @Entity("user")
 export class UserModel extends ModelBase {
@@ -14,7 +17,14 @@ export class UserModel extends ModelBase {
   @Column({ name: "name", nullable: false })
   name: string;
 
-  @Column({ name: "password", nullable: false })
+  // @Column({ name: "password", nullable: false })
+  // password: string;
+  @Column({
+    type: "varchar",
+    nullable: false,
+    name: "password",
+    transformer: new EncryptionTransformer(MyEncryptionTransformerConfig)
+  })
   password: string;
 }
 

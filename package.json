@@ -16,7 +16,8 @@
       "inversify-express-utils": "^6.4.3",
       "pg": "^8.4.0",
       "reflect-metadata": "^0.1.13",
-      "typeorm": "0.3.6"
+      "typeorm": "0.3.6",
+      "typeorm-encrypted": "^0.7.0"
    },
    "scripts": {
       "start": "ts-node src/index.ts",

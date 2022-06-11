@@ -21,7 +21,7 @@ export class CreateUserUseCase implements ICreateUserUseCase {
     user.phoneNumber = payload.phoneNumber
     user.name = payload.name
     user.password = payload.password
-
+    
     const userInserted = await this.repositoryUser.add(user)
     return userInserted
   }

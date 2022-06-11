@@ -1,6 +1,5 @@
 import * as express from "express"
 import * as bodyParser from "body-parser"
-// import * as connectionOptions from '../ormconfig';
 import { createConnection } from 'typeorm';
 import { InversifyExpressServer } from 'inversify-express-utils'
 import { container } from './main/inversify/inversify.config'
