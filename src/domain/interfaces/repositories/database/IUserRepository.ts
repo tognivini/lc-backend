@@ -7,4 +7,5 @@ export interface IUserRepository
   getAllPagging(
     request: GetAllUsersDto
   ): Promise<UserModel[]>
+  delete(id: string): Promise<void>
 }

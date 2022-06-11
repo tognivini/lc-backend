@@ -1,6 +1,6 @@
-export class GetAllUsersDto {
-  public userId: string;
+export class CreateUserDto {
   public email: string;
   public phoneNumber: string;
   public name: string;
+  public password: string;
 }

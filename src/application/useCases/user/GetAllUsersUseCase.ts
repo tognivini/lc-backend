@@ -5,7 +5,6 @@ import { IUserRepository } from '../../../domain/interfaces/repositories/databas
 import { IGetAllUsersUseCase } from '../../../domain/interfaces/useCases/user/_index'
 import { UserModel } from '../../../models/_index'
 import { TYPES_USER } from '../../../main/inversify/types'
-// import * as contextRequest from '../../../utils/context/ContextRequest'
 
 @injectable()
 export class GetAllUsersUseCase implements IGetAllUsersUseCase {
@@ -17,9 +16,6 @@ export class GetAllUsersUseCase implements IGetAllUsersUseCase {
   async execute(
     filter: GetAllUsersDto
   ): Promise<UserModel[]> {
-    // const user = await this._findUserById.execute(
-    //   contextRequest.getAuthUser().id
-    // )
     return await this._userRepository.getAllPagging(filter)
   }
 }

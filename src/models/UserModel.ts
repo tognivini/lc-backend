@@ -1,4 +1,5 @@
-import { Entity, Column } from "typeorm";
+import { PermissionsModel } from './PermissionsModel';
+import { Entity, Column, OneToOne } from "typeorm";
 import { PermissionTypeEnum } from "../domain/enums/userEnums/_index";
 import { ModelBase } from "./base/ModelBase";
 
@@ -11,16 +12,9 @@ export class UserModel extends ModelBase {
   phoneNumber: string;
 
   @Column({ name: "name", nullable: false })
-  name: number;
+  name: string;
 
-  @Column({ name: "type_person", nullable: false })
+  @Column({ name: "password", nullable: false })
   password: string;
-
-  //criar relação com tabela permissao
-  @Column({
-    type: "varchar",
-    nullable: true,
-    name: "permission",
-  })
-  permission: PermissionTypeEnum;
 }
+
