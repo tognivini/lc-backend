@@ -12,6 +12,7 @@ import {
 } from "inversify-express-utils";
 
 import { GetAllUsersDto } from "../application/dto/userDto/_index";
+import { IUpdateUserUseCase } from "../domain/interfaces/useCases/user/IUpdateUserUseCase";
 import { ICreateUserUseCase, IGetAllUsersUseCase } from "../domain/interfaces/useCases/user/_index";
 import { TYPES_USER } from "../main/inversify/types";
 // import { RequestFilter } from '../../utils/commons/helpers/protocols/Http'
@@ -26,7 +27,10 @@ export class UserController {
     private _getAllUsers: IGetAllUsersUseCase,
 
     @inject(TYPES_USER.ICreateUserUseCase)
-    private _createUser: ICreateUserUseCase
+    private _createUser: ICreateUserUseCase,
+
+    @inject(TYPES_USER.IUpdateUserUseCase)
+    private _updateUser: IUpdateUserUseCase,
   ) {}
   
   @httpGet("/")
@@ -45,6 +49,17 @@ export class UserController {
   private async create(@request() req: Request, @response() res: Response) {
     try {
       return await this._createUser.execute(req.body)
+    } catch (error) {
+      return error
+    }
+  }
+
+  @httpPut('/update/:id')
+  private async update(@request() req: Request, @response() res: Response) {
+    try {
+      const { id } = req.params
+      return await this._updateUser.execute(id, req.body)
+      
     } catch (error) {
       return error
     }
@@ -74,17 +89,6 @@ export class UserController {
   //   try {
   //     return new AdaptResponse(res).adaptQuery(
   //       await this._getAllUsers.execute(req.query)
-  //     )
-  //   } catch (error) {
-  //     return new AdaptResponse(res).adaptError(error)
-  //   }
-  // }
-
-  // @httpPost('/', authorization(AUTHORIZATION.KM_TRAVELED.CREATE))
-  // private async create(@request() req: Request, @response() res: Response) {
-  //   try {
-  //     return new AdaptResponse(res).adapt(
-  //       await this._createKmTraveled.execute(req.body)
   //     )
   //   } catch (error) {
   //     return new AdaptResponse(res).adaptError(error)
