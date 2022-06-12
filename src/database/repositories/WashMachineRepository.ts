@@ -1,7 +1,7 @@
 import { injectable } from "inversify";
 import { getRepository, SelectQueryBuilder, UpdateResult } from "typeorm";
 
-import { GetAllLaundrysDto } from "../../application/dto/laundryDto/_index";
+import { GetAllWashMachinesDto } from "../../application/dto/washMachineDto/_index";
 import { StatusEnum } from "../../domain/enums/baseEnums/_index";
 import { IWashMachineRepository } from "../../domain/interfaces/repositories/database/IWashMachineRepository";
 import { WashMachineModel } from "../../models/_index";
@@ -45,7 +45,7 @@ export class WashMachineRepository implements IWashMachineRepository {
     await repo.delete(id)
   }
 
-  async getAllPagging(request: GetAllLaundrysDto): Promise<WashMachineModel[]> {
+  async getAllPagging(request: GetAllWashMachinesDto): Promise<WashMachineModel[]> {
     const repo = getRepository(WashMachineModel);
     const query = repo.createQueryBuilder("wash_machine")
 
