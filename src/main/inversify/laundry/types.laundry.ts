@@ -4,5 +4,4 @@ export const TYPES_LAUNDRY = {
   ICreateLaundryUseCase: Symbol.for('ICreateLaundryUseCase'),
   IUpdateLaundryUseCase: Symbol.for('IUpdateLaundryUseCase'),
   ILaundryRepository: Symbol.for('ILaundryRepository'),
-  // IDeleteUserUseCase: Symbol.for('IDeleteUserUseCase')
 }

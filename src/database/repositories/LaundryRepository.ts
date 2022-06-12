@@ -22,9 +22,10 @@ export class LaundryRepository implements ILaundryRepository {
     const query = getRepository(LaundryModel).createQueryBuilder("laundry");
 
     query.where(filter);
-    query.andWhere("user.status = :status", {
+    query.andWhere("laundry.status = :status", {
       status: StatusEnum.ATIVO,
     });
+
     return await query.getOne();
   }
 

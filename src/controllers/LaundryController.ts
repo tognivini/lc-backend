@@ -13,7 +13,8 @@ import {
 
 import { 
   ICreateLaundryUseCase, 
-  IGetAllLaundrysUseCase 
+  IGetAllLaundrysUseCase, 
+  IUpdateLaundryUseCase
 } from "../domain/interfaces/useCases/laundry/_index";
 import { TYPES_LAUNDRY } from "../main/inversify/types";
 // import { RequestFilter } from '../../utils/commons/helpers/protocols/Http'
@@ -30,12 +31,8 @@ export class LaundryController {
     @inject(TYPES_LAUNDRY.ICreateLaundryUseCase)
     private _createLaundry: ICreateLaundryUseCase,
 
-    // @inject(TYPES_LAUNDRY.IUpdateUserUseCase)
-    // private _updateUser: IUpdateUserUseCase,
-
-    // @inject(TYPES_LAUNDRY.IDeleteUserUseCase)
-    // private _deleteUser: IDeleteUserUseCase,
-
+    @inject(TYPES_LAUNDRY.IUpdateLaundryUseCase)
+    private _updateLaundry: IUpdateLaundryUseCase,
   ) {}
   
   @httpGet("/")
@@ -59,24 +56,14 @@ export class LaundryController {
     }
   }
 
-  // @httpPut('/update/:id')
-  // private async update(@request() req: Request, @response() res: Response) {
-  //   try {
-  //     const { id } = req.params
-  //     return await this._updateUser.execute(id, req.body)
+  @httpPut('/update/:id')
+  private async update(@request() req: Request, @response() res: Response) {
+    try {
+      const { id } = req.params
+      return await this._updateLaundry.execute(id, req.body)
       
-  //   } catch (error) {
-  //     return error
-  //   }
-  // }
-
-  // @httpDelete('/delete/:id')
-  // private async delete(@request() req: Request, @response() res: Response) {
-  //   try {
-  //     const { id } = req.params
-  //     return await this._deleteUser.execute(id)
-  //   } catch (error) {
-  //     return error
-  //   }
-  // }
+    } catch (error) {
+      return error
+    }
+  }
 }

@@ -1,6 +1,8 @@
+import { UserModel } from "../../../models/_index";
+
 export class UpdateLaundryDto {
-  public email?: string;
-  public phoneNumber?: string;
-  public name?: string;
-  public password?: string;
+  public laundryId?: string;
+  public name: string;
+  public address: string;
+  public responsible: UserModel;
 }
