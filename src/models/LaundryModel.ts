@@ -1,4 +1,5 @@
-import { Entity, Column, OneToOne, JoinColumn } from "typeorm";
+import { WashMachineModel } from './WashMachineModel';
+import { Entity, Column, OneToOne, JoinColumn, OneToMany } from "typeorm";
 import { ModelBase } from "./base/ModelBase";
 import { UserModel } from "./_index";
 
@@ -14,5 +15,8 @@ export class LaundryModel extends ModelBase {
   @OneToOne(() => UserModel, { nullable: true })
   @JoinColumn({ name: 'responsible_id'})
   responsible: UserModel
+
+  @OneToMany(() => WashMachineModel, (washMachines) => washMachines.laundry)
+  washMachines: WashMachineModel[]
 }
 

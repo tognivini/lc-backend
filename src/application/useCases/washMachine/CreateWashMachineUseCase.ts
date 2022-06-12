@@ -32,7 +32,6 @@ export class CreateWashMachineUseCase implements ICreateWashMachineUseCase {
         laundry = LaundryFinded
       }
     }
-    console.log('finded', laundry)
     
     const washMachine = new WashMachineModel()
     

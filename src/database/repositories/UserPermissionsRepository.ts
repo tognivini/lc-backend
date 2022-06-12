@@ -38,7 +38,6 @@ export class UserPermissionsRepository implements IUserPermissionsRepository {
     await getRepository(UserPermissionsModel).save({id, ...data})
     return data
     // const user = await this.findUserCustom(<UserPermissionsModel>{ id: id })
-    // console.log('here is the finded user on repo', user)
     // return getRepository(UserPermissionsModel).save({
     //   ...user, // existing fields
     //   ...data // updated fields

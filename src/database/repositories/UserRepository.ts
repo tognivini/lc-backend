@@ -38,7 +38,6 @@ export class UserRepository implements IUserRepository {
     await getRepository(UserModel).save({id, ...data})
     return data
     // const user = await this.findUserCustom(<UserModel>{ id: id })
-    // console.log('here is the finded user on repo', user)
     // return getRepository(UserModel).save({
     //   ...user, // existing fields
     //   ...data // updated fields
@@ -61,6 +60,6 @@ export class UserRepository implements IUserRepository {
     //   )
 
     // const [data, count] = await query.getManyAndCount()
-    return query.getRawMany();
+    return query.getMany();
   }
 }

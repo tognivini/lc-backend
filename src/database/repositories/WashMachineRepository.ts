@@ -49,6 +49,6 @@ export class WashMachineRepository implements IWashMachineRepository {
     const repo = getRepository(WashMachineModel);
     const query = repo.createQueryBuilder("wash_machine")
 
-    return query.getRawMany();
+    return query.getMany();
   }
 }

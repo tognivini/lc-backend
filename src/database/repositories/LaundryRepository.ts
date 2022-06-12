@@ -54,7 +54,11 @@ export class LaundryRepository implements ILaundryRepository {
         'responsible',
         'responsible.id = laundry.responsible_id'
       )
+      .leftJoinAndSelect(
+        'laundry.washMachines',
+        'washMachines',
+      )
 
-    return query.getRawMany();
+    return await query.getMany()
   }
 }
