@@ -37,12 +37,6 @@ export class LaundryRepository implements ILaundryRepository {
     data.updatedAt = DateUtils.now()
     await getRepository(LaundryModel).save({id, ...data})
     return data
-    // const user = await this.findUserCustom(<LaundryModel>{ id: id })
-    // console.log('here is the finded user on repo', user)
-    // return getRepository(LaundryModel).save({
-    //   ...user, // existing fields
-    //   ...data // updated fields
-    // });
   }
 
   async delete(id: string): Promise<void> {
@@ -52,15 +46,14 @@ export class LaundryRepository implements ILaundryRepository {
 
   async getAllPagging(request: GetAllLaundrysDto): Promise<LaundryModel[]> {
     const repo = getRepository(LaundryModel);
-    const query = repo.createQueryBuilder("laundry");
-    //   .leftJoinAndMapOne(
-    //     'user.consultant',
-    //     'user.consultant',
-    //     'consultant',
-    //     'consultant.id = user.consultant_id'
-    //   )
+    const query = repo.createQueryBuilder("laundry")
+      .leftJoinAndMapOne(
+        'laundry.responsible',
+        'laundry.responsible',
+        'responsible',
+        'responsible.id = laundry.responsible_id'
+      )
 
-    // const [data, count] = await query.getManyAndCount()
     return query.getRawMany();
   }
 }

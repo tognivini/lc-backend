@@ -11,7 +11,10 @@ import {
   response,
 } from "inversify-express-utils";
 
-import { IGetAllLaundrysUseCase } from "../domain/interfaces/useCases/laundry/_index";
+import { 
+  ICreateLaundryUseCase, 
+  IGetAllLaundrysUseCase 
+} from "../domain/interfaces/useCases/laundry/_index";
 import { TYPES_LAUNDRY } from "../main/inversify/types";
 // import { RequestFilter } from '../../utils/commons/helpers/protocols/Http'
 // import { AUTHORIZATION } from '../../utils/commons/resources/constants/AuthorizationScopes'
@@ -24,8 +27,8 @@ export class LaundryController {
     @inject(TYPES_LAUNDRY.IGetAllLaundrysUseCase)
     private _getAllLaundrys: IGetAllLaundrysUseCase,
 
-    // @inject(TYPES_LAUNDRY.ICreateUserUseCase)
-    // private _createUser: ICreateUserUseCase,
+    @inject(TYPES_LAUNDRY.ICreateLaundryUseCase)
+    private _createLaundry: ICreateLaundryUseCase,
 
     // @inject(TYPES_LAUNDRY.IUpdateUserUseCase)
     // private _updateUser: IUpdateUserUseCase,
@@ -47,14 +50,14 @@ export class LaundryController {
     }
   }
 
-  // @httpPost('/create')
-  // private async create(@request() req: Request, @response() res: Response) {
-  //   try {
-  //     return await this._createUser.execute(req.body)
-  //   } catch (error) {
-  //     return error
-  //   }
-  // }
+  @httpPost('/create')
+  private async create(@request() req: Request, @response() res: Response) {
+    try {
+      return await this._createLaundry.execute(req.body)
+    } catch (error) {
+      return error
+    }
+  }
 
   // @httpPut('/update/:id')
   // private async update(@request() req: Request, @response() res: Response) {
