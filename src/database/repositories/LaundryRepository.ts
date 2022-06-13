@@ -20,7 +20,12 @@ export class LaundryRepository implements ILaundryRepository {
 
   async findUserCustom(filter: LaundryModel): Promise<LaundryModel> {
     const query = getRepository(LaundryModel).createQueryBuilder("laundry");
-
+    query.leftJoinAndMapOne(
+      'laundry.responsible',
+      'laundry.responsible',
+      'responsible',
+      'responsible.id = laundry.responsible_id'
+    )
     query.where(filter);
     query.andWhere("laundry.status = :status", {
       status: StatusEnum.ATIVO,

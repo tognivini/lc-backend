@@ -1,7 +1,7 @@
 import { WashMachineModel } from './WashMachineModel';
-import { Entity, Column, OneToOne, JoinColumn, OneToMany } from "typeorm";
+import { Entity, Column, OneToOne, JoinColumn, OneToMany, ManyToOne, ManyToMany } from "typeorm";
 import { ModelBase } from "./base/ModelBase";
-import { UserModel } from "./_index";
+import { ScheduleModel, UserModel } from "./_index";
 
 
 @Entity("laundry")
@@ -18,5 +18,8 @@ export class LaundryModel extends ModelBase {
 
   @OneToMany(() => WashMachineModel, (washMachines) => washMachines.laundry)
   washMachines: WashMachineModel[]
+
+  @OneToMany(() => ScheduleModel, (schedule) => schedule.laundry)
+  schedule: ScheduleModel[]
 }
 

@@ -1,5 +1,5 @@
 import { ConnectionOptions } from 'typeorm'
-import {UserModel, UserPermissionsModel, LaundryModel, WashMachineModel } from './src/models/_index';
+import {UserModel, UserPermissionsModel, LaundryModel, WashMachineModel, ScheduleModel } from './src/models/_index';
 
 const connectionOptions: ConnectionOptions = {
   type: 'postgres',
@@ -9,7 +9,7 @@ const connectionOptions: ConnectionOptions = {
   password: 'postgres',
   database: 'postgres',
   entities: [
-    UserModel, UserPermissionsModel, LaundryModel, WashMachineModel 
+    UserModel, UserPermissionsModel, LaundryModel, WashMachineModel, ScheduleModel 
   ],
   synchronize: false,
   logging: ['warn', 'error'],

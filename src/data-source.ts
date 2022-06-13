@@ -1,6 +1,6 @@
  import "reflect-metadata"
 import { DataSource } from "typeorm"
-import { UserModel, UserPermissionsModel, LaundryModel, WashMachineModel } from "./models/_index"
+import { UserModel, UserPermissionsModel, LaundryModel, WashMachineModel, ScheduleModel } from "./models/_index"
 
 export const AppDataSource = new DataSource({
     type: "postgres",
@@ -11,7 +11,7 @@ export const AppDataSource = new DataSource({
     database: "postgres",
     synchronize: false,
     logging: false,
-    entities: [UserModel, UserPermissionsModel, LaundryModel, WashMachineModel ],
+    entities: [UserModel, UserPermissionsModel, LaundryModel, WashMachineModel, ScheduleModel ],
     migrations: ["src/database/migrations/**/*.ts"],
     subscribers: [],
 })
