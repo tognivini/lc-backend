@@ -1,8 +1,5 @@
 import { Entity, Column, OneToOne, JoinColumn, ManyToMany, CreateDateColumn, ManyToOne } from "typeorm";
-import { PermissionTypeEnum } from "../domain/enums/userEnums/_index";
 import { ModelBase } from "./base/ModelBase";
-import { EncryptionTransformer } from "typeorm-encrypted";
-import { MyEncryptionTransformerConfig } from './base/encryption-config'
 import { SituationScheduleEnum } from "../domain/enums/baseEnums/_index";
 import { LaundryModel, WashMachineModel } from "./_index";
 import { UserModel } from "./UserModel";
