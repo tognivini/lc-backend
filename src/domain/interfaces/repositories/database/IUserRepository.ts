@@ -8,4 +8,6 @@ export interface IUserRepository
     request: GetAllUsersDto
   ): Promise<UserModel[]>
   delete(id: string): Promise<void>
+
+  findByEmail(email: string): Promise<UserModel>
 }

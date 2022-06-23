@@ -28,6 +28,18 @@ export class UserRepository implements IUserRepository {
     return await query.getOne();
   }
 
+  async findByEmail(email: string): Promise<UserModel> {
+    const query = getRepository(UserModel).createQueryBuilder("user");
+
+    query.where("user.email = :email", {
+      email: email
+    });
+    query.andWhere("user.status = :status", {
+      status: StatusEnum.ATIVO,
+    });
+    return await query.getOne();
+  }
+
   async add(model: UserModel): Promise<UserModel> {
     const repo = getRepository(UserModel);
     return await repo.save(model);
