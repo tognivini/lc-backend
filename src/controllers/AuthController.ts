@@ -12,19 +12,11 @@ import { ILoginUseCase } from '../domain/interfaces/useCases/auth/_index'
 // import { ILoginUserUseCase } from '../../domain/interfaces/useCases/auth/ILoginUserUseCase'
 
 import { TYPES_AUTH } from '../main/inversify/auth/types.auth'
-
-interface IRefreshTokenBody {
-  refreshToken: string
-}
-
 @controller('/api/auth')
 export class AuthController {
   constructor(
     @inject(TYPES_AUTH.ILoginUseCase)
     private _login: ILoginUseCase,
-
-    // @inject(TYPES_AUTH.IRefreshTokenRequestUseCase)
-    // private _generateRefreshTokenGenerateUseCase: IRefreshTokenRequestUseCase
   ) {}
 
   @httpPost('/login')
@@ -36,19 +28,4 @@ export class AuthController {
         return error
     }
   }
-
-//   @httpPost('/refresh-token')
-//   private async refreshToken(
-//     @request() req: Request<undefined, undefined, IRefreshTokenBody>,
-//     @response() res: Response
-//   ) {
-//     const { refreshToken } = req.body
-
-//     // return new AdaptResponse(res).adapt(
-//     //   await this._generateRefreshTokenGenerateUseCase.execute({
-//     //     refreshToken,
-//     //   })
-//     // )
-//     return null
-//   }
 }
