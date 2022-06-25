@@ -1,5 +1,6 @@
 import * as express from "express"
 import * as bodyParser from "body-parser"
+import * as cors from 'cors'
 import { createConnection } from 'typeorm';
 import { InversifyExpressServer } from 'inversify-express-utils'
 import { container } from './main/inversify/inversify.config'
@@ -20,7 +21,7 @@ server.setConfig((application: Application) => {
     application.use(bodyParser.urlencoded({ extended: true }))
     application.use(bodyParser.json())
     application.set('case sensitive routing', false)
-    // application.use(cors())
+    application.use(cors())
     // application.use(httpContext.middleware)
     // application.use(loggingRequests())
   })
