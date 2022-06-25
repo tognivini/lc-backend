@@ -1,5 +1,6 @@
 // import { UnauthorizedError } from '../../../../utils/commons/helpers/errors/UnauthorizedError'
 import { HttpResponse } from '../../../utils/commons/protocols/Http'
+import { UserMessages } from '../messages/_index'
 // import {
 //   Messages,
 //   UserMessages,
@@ -39,12 +40,12 @@ export const forbidden = (error: string): HttpResponse => ({
 //   messages: ['Não autorizado'],
 // })
 
-// export const invalidCredentials = (): HttpResponse => ({
-//   success: false,
-//   statusCode: 401,
-//   data: null,
-//   messages: [UserMessages.INVALID_CREDENTIAL],
-// })
+export const invalidCredentials = (): HttpResponse => ({
+  success: false,
+  statusCode: 401,
+  data: null,
+  messages: [UserMessages.INVALID_CREDENTIALS],
+})
 
 // export const serverError = (error: Error): HttpResponse => ({
 //   success: false,

@@ -3,7 +3,7 @@ import { PermissionsTypeEnum } from '../../../enums/baseEnums/_index'
 
 export interface IAccessTokenData {
   userId: string
-  PermissionType: PermissionsTypeEnum
+  permissionType: PermissionsTypeEnum
 }
 
 export interface IAccessTokenGenerateUseCase {

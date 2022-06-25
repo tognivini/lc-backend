@@ -13,7 +13,7 @@ import {
   TYPES_USER,
 } from "../../../main/inversify/types";
 import { HttpResponse } from "../../../utils/commons/protocols/Http";
-import { ok, badRequest } from "../../../utils/commons/http/HttpHelper";
+import { ok, badRequest, invalidCredentials } from "../../../utils/commons/http/HttpHelper";
 import { UserMessages } from "../../../utils/commons/messages/_index";
 import { ResultLoginDto } from "../../dto/authDto/_index";
 @injectable()
@@ -29,10 +29,10 @@ export class LoginUseCase implements ILoginUseCase {
   async authenticate(email: string, password: string): Promise<HttpResponse> {
     const userFinded = await this._repositoryUser.findByEmail(email);
     if (!userFinded?.id) {
-      return badRequest(UserMessages.ERROR_USER_NOT_FOUND);
+      return invalidCredentials()
     }
     if (userFinded?.password !== password) {
-      return badRequest(UserMessages.INVALID_CREDENTIALS);
+      return invalidCredentials()
     }
 
     const token = await this._accessTokenGenerateUseCase.execute(userFinded);
