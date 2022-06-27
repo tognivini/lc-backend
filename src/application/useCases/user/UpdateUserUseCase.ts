@@ -1,4 +1,4 @@
-import { UserModel } from './../../../models/UserModel';
+import { UserModel } from './../../../models/_index';
 import { inject, injectable } from 'inversify'
 
 import { UpdateUserDto } from '../../../application/dto/userDto/_index'
@@ -22,13 +22,9 @@ export class UpdateUserUseCase implements IUpdateUserUseCase {
     dto: UpdateUserDto
   ): Promise<HttpResponse<UserModel>> {
     const userFinded = await this._repositoryUser.findById(id)
-    console.log(userFinded, 'finded')
     if (!userFinded?.id){
       return badRequest(UserMessages.ERROR_USER_NOT_FOUND)
     }
-    
-    
-    console.log(dto, 'dto')
     
     userFinded.email =  dto.email
     userFinded.phoneNumber =  dto.phoneNumber

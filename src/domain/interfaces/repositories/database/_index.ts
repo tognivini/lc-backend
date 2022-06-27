@@ -1,1 +1,5 @@
+export * from './IUserPermissionsRepository'
+export * from './ILaundryRepository'
+export * from './IWashMachineRepository'
+export * from './IScheduleRepository'
 export * from './IUserRepository'

@@ -1,7 +1,9 @@
-import { PermissionsModel } from './PermissionsModel';
-import { Entity, Column, OneToOne } from "typeorm";
-import { PermissionTypeEnum } from "../domain/enums/userEnums/_index";
+import { Entity, Column, OneToOne, ManyToMany, OneToMany } from "typeorm";
 import { ModelBase } from "./base/ModelBase";
+import { EncryptionTransformer } from "typeorm-encrypted";
+import { MyEncryptionTransformerConfig } from './base/encryption-config'
+import { ScheduleModel } from "./_index";
+
 
 @Entity("user")
 export class UserModel extends ModelBase {
@@ -14,7 +16,15 @@ export class UserModel extends ModelBase {
   @Column({ name: "name", nullable: false })
   name: string;
 
-  @Column({ name: "password", nullable: false })
+  @Column({
+    type: "varchar",
+    nullable: false,
+    name: "password",
+    transformer: new EncryptionTransformer(MyEncryptionTransformerConfig)
+  })
   password: string;
+
+  @OneToMany(() => ScheduleModel, (schedule) => schedule.laundry)
+  schedule: ScheduleModel[]
 }
 

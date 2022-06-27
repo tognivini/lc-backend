@@ -28,17 +28,28 @@ export class UserRepository implements IUserRepository {
     return await query.getOne();
   }
 
+  async findByEmail(email: string): Promise<UserModel> {
+    const query = getRepository(UserModel).createQueryBuilder("user");
+
+    query.where("user.email = :email", {
+      email: email,
+    });
+    query.andWhere("user.status = :status", {
+      status: StatusEnum.ATIVO,
+    });
+    return await query.getOne();
+  }
+
   async add(model: UserModel): Promise<UserModel> {
     const repo = getRepository(UserModel);
     return await repo.save(model);
   }
 
   async update(id: string, data: UserModel): Promise<UserModel> {
-    data.updatedAt = DateUtils.now()
-    await getRepository(UserModel).save({id, ...data})
-    return data
+    data.updatedAt = DateUtils.now();
+    await getRepository(UserModel).save({ id, ...data });
+    return data;
     // const user = await this.findUserCustom(<UserModel>{ id: id })
-    // console.log('here is the finded user on repo', user)
     // return getRepository(UserModel).save({
     //   ...user, // existing fields
     //   ...data // updated fields
@@ -46,21 +57,40 @@ export class UserRepository implements IUserRepository {
   }
 
   async delete(id: string): Promise<void> {
-    const repo = getRepository(UserModel)
-    await repo.delete(id)
+    const repo = getRepository(UserModel);
+    await repo.delete(id);
   }
 
   async getAllPagging(request: GetAllUsersDto): Promise<UserModel[]> {
     const repo = getRepository(UserModel);
     const query = repo.createQueryBuilder("user");
-    //   .leftJoinAndMapOne(
-    //     'user.consultant',
-    //     'user.consultant',
-    //     'consultant',
-    //     'consultant.id = user.consultant_id'
-    //   )
+    this.setFilters(request, query);
 
-    // const [data, count] = await query.getManyAndCount()
-    return query.getRawMany();
+    return query.getMany();
+  }
+
+  private setFilters(
+    request: GetAllUsersDto,
+    query: SelectQueryBuilder<UserModel>
+  ): void {
+    query.where("1 = 1");
+
+    if (request.userId) {
+      query.andWhere("user.id = :userId", {
+        userId: request.userId,
+      });
+    }
+
+    if (request.name) {
+      query.andWhere("user.userName ILIKE :userName", {
+        userName: "%" + request.name + "%",
+      });
+    }
+
+    if (request.email) {
+      query.andWhere("user.email = :email", {
+        email: request.email,
+      });
+    }
   }
 }

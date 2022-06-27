@@ -1,0 +1,5 @@
+export enum SituationScheduleEnum {
+  FINALIZADO = 'FINALIZADO',
+  EM_ANDAMENTO = 'EM_ANDAMENTO',
+  NAO_INICIADO = 'NAO_INICIADO'
+}

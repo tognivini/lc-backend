@@ -1,6 +1,6 @@
-import { Entity, OneToOne, JoinColumn } from "typeorm";
+import { Entity, OneToOne, JoinColumn, Column } from "typeorm";
+import { PermissionsTypeEnum } from "../domain/enums/baseEnums/_index";
 import { ModelBase } from "./base/ModelBase";
-import { PermissionsModel } from "./PermissionsModel";
 import { UserModel } from "./UserModel";
 
 @Entity("user_permissions")
@@ -9,8 +9,11 @@ export class UserPermissionsModel extends ModelBase {
   @JoinColumn({ name: 'user_id' })
   user: UserModel
 
-  @OneToOne(() => PermissionsModel)
-  @JoinColumn({ name: 'permission' })
-  Permission: PermissionsModel
+  @Column({
+    type: "varchar",
+    nullable: true,
+    name: "type",
+  })
+  type: PermissionsTypeEnum;
 }
 

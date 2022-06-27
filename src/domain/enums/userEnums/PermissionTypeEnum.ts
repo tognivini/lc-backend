@@ -1,3 +1,4 @@
+//n mais usado
 export enum PermissionTypeEnum{
     ADMIN = 'ADMIN',
     BOLSISTA = 'BOLSISTA',

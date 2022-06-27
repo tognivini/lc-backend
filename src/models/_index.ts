@@ -1,3 +1,5 @@
 export * from './UserModel'
-export * from './PermissionsModel'
+export * from './LaundryModel'
 export * from './UserPermissionsModel'
+export * from './ScheduleModel'
+export * from './WashMachineModel'
