@@ -28,8 +28,14 @@ export class UserRepository implements IUserRepository {
     return await query.getOne();
   }
 
+  //only used to get user on login
   async findByEmail(email: string): Promise<UserModel> {
-    const query = getRepository(UserModel).createQueryBuilder("user");
+    const query = getRepository(UserModel)
+      .createQueryBuilder("user")
+      .leftJoinAndSelect(
+        "user.userPermission",
+        "userPermission",
+      );
 
     query.where("user.email = :email", {
       email: email,

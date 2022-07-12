@@ -20,11 +20,10 @@ export class AccessTokenGenerateUseCase implements IAccessTokenGenerateUseCase {
 
   async execute(user: UserModel): Promise<string> {
 
-    // pegar permissao de user
     return this._tokenJWTGenerateUseCase.execute<IAccessTokenData>(
       {
         userId: user.id,
-        permissionType: PermissionsTypeEnum.CLIENTE,
+        permissionType: user.userPermission.type,
       },
       process.env.JWT_KEY,
       {
