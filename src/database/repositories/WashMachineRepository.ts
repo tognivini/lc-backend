@@ -15,10 +15,10 @@ export class WashMachineRepository implements IWashMachineRepository {
   async findById(id: string): Promise<WashMachineModel> {
     if (!id) return null;
 
-    return await this.findUserCustom(<WashMachineModel>{ id: id });
+    return await this.findWashMachineCustom(<WashMachineModel>{ id: id });
   }
 
-  async findUserCustom(filter: WashMachineModel): Promise<WashMachineModel> {
+  async findWashMachineCustom(filter: WashMachineModel): Promise<WashMachineModel> {
     const query = getRepository(WashMachineModel).createQueryBuilder("wash_machine");
 
     query.where(filter);

@@ -15,17 +15,17 @@ export class LaundryRepository implements ILaundryRepository {
   async findById(id: string): Promise<LaundryModel> {
     if (!id) return null;
 
-    return await this.findUserCustom(<LaundryModel>{ id: id });
+    return await this.findLaundryUserCustom(<LaundryModel>{ id: id });
   }
 
-  async findUserCustom(filter: LaundryModel): Promise<LaundryModel> {
+  async findLaundryUserCustom(filter: LaundryModel): Promise<LaundryModel> {
     const query = getRepository(LaundryModel).createQueryBuilder("laundry");
     query.leftJoinAndMapOne(
-      'laundry.responsible',
-      'laundry.responsible',
-      'responsible',
-      'responsible.id = laundry.responsible_id'
-    )
+      "laundry.responsible",
+      "laundry.responsible",
+      "responsible",
+      "responsible.id = laundry.responsible_id"
+    );
     query.where(filter);
     query.andWhere("laundry.status = :status", {
       status: StatusEnum.ATIVO,
@@ -40,30 +40,51 @@ export class LaundryRepository implements ILaundryRepository {
   }
 
   async update(id: string, data: LaundryModel): Promise<LaundryModel> {
-    data.updatedAt = DateUtils.now()
-    await getRepository(LaundryModel).save({id, ...data})
-    return data
+    data.updatedAt = DateUtils.now();
+    await getRepository(LaundryModel).save({ id, ...data });
+    return data;
   }
 
   async delete(id: string): Promise<void> {
-    const repo = getRepository(LaundryModel)
-    await repo.delete(id)
+    const repo = getRepository(LaundryModel);
+    await repo.delete(id);
   }
 
   async getAllPagging(request: GetAllLaundrysDto): Promise<LaundryModel[]> {
     const repo = getRepository(LaundryModel);
-    const query = repo.createQueryBuilder("laundry")
+    const query = repo
+      .createQueryBuilder("laundry")
       .leftJoinAndMapOne(
-        'laundry.responsible',
-        'laundry.responsible',
-        'responsible',
-        'responsible.id = laundry.responsible_id'
+        "laundry.responsible",
+        "laundry.responsible",
+        "responsible",
+        "responsible.id = laundry.responsible_id"
       )
-      .leftJoinAndSelect(
-        'laundry.washMachines',
-        'washMachines',
-      )
+      .leftJoinAndSelect("laundry.washMachines", "washMachines");
 
-    return await query.getMany()
+    this.setFilters(request, query);
+
+    query.andWhere("laundry.status = :status", {
+      status: StatusEnum.ATIVO,
+    });
+
+    return await query.getMany();
+  }
+
+  private setFilters(
+    request: GetAllLaundrysDto,
+    query: SelectQueryBuilder<LaundryModel>
+  ): void {
+    query.where("1=1");
+    if (request.laundryId) {
+      query.andWhere("laundry.id = :laundryId", {
+        laundryId: request.laundryId,
+      });
+    }
+    if (request.responsibleId) {
+      query.andWhere("laundry.responsible.id = :responsibleId", {
+        responsibleId: request.responsibleId,
+      });
+    }
   }
 }
