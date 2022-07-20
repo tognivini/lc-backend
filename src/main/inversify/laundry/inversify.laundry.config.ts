@@ -4,7 +4,8 @@ import { LaundryController } from '../../../controllers/LaundryController'
 import { LaundryRepository } from '../../../database/repositories/_index'
 import { 
   CreateLaundryUseCase, 
-  GetAllLaundrysUseCase 
+  GetAllLaundrysUseCase, 
+  GetAvailableLaundrysUseCase
 } from '../../../application/useCases/laundry/_index'
 import { TYPES_LAUNDRY } from './types.laundry'
 import { UpdateLaundryUseCase } from '../../../application/useCases/laundry/UpdateLaundryUseCase'
@@ -30,5 +31,9 @@ export const bindingsLaundry = new ContainerModule((bind) => {
   bind<UpdateLaundryUseCase>(TYPES_LAUNDRY.IUpdateLaundryUseCase).to(
     UpdateLaundryUseCase
   )
-  
+
+
+  bind<GetAvailableLaundrysUseCase>(TYPES_LAUNDRY.IGetAvailableLaundrysUseCase).to(
+    GetAvailableLaundrysUseCase
+  )
 })

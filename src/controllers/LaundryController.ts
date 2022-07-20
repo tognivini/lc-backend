@@ -14,6 +14,7 @@ import {
 import { 
   ICreateLaundryUseCase, 
   IGetAllLaundrysUseCase, 
+  IGetAvailableLaundrysUseCase, 
   IUpdateLaundryUseCase
 } from "../domain/interfaces/useCases/laundry/_index";
 import { TYPES_LAUNDRY } from "../main/inversify/types";
@@ -27,6 +28,9 @@ export class LaundryController {
   constructor(
     @inject(TYPES_LAUNDRY.IGetAllLaundrysUseCase)
     private _getAllLaundrys: IGetAllLaundrysUseCase,
+    
+    @inject(TYPES_LAUNDRY.IGetAvailableLaundrysUseCase)
+    private _getAvailableLaundrys: IGetAvailableLaundrysUseCase,
 
     @inject(TYPES_LAUNDRY.ICreateLaundryUseCase)
     private _createLaundry: ICreateLaundryUseCase,
@@ -42,6 +46,18 @@ export class LaundryController {
     ) {
       try {
         return await this._getAllLaundrys.execute(req.query);
+    } catch (error) {
+      return error;
+    }
+  }
+
+  @httpGet("/get-available")
+  private async getAvailable(
+    @request() req: express.Request,
+    @response() res: express.Response
+    ) {
+      try {
+        return await this._getAvailableLaundrys.execute(req.query);
     } catch (error) {
       return error;
     }

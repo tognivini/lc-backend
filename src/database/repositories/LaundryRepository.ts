@@ -50,6 +50,27 @@ export class LaundryRepository implements ILaundryRepository {
     await repo.delete(id);
   }
 
+  async getAvailablelaundrys(request: GetAllLaundrysDto): Promise<LaundryModel[]> {
+    const repo = getRepository(LaundryModel);
+    const query = repo
+      .createQueryBuilder("laundry")
+      .leftJoinAndMapOne(
+        "laundry.responsible",
+        "laundry.responsible",
+        "responsible",
+        "responsible.id = laundry.responsible_id"
+      )
+      .innerJoinAndSelect("laundry.washMachines", "washMachines");
+
+    this.setFilters(request, query);
+
+    query.andWhere("laundry.status = :status", {
+      status: StatusEnum.ATIVO,
+    });
+
+    return await query.getMany();
+  }
+
   async getAllPagging(request: GetAllLaundrysDto): Promise<LaundryModel[]> {
     const repo = getRepository(LaundryModel);
     const query = repo
@@ -63,10 +84,6 @@ export class LaundryRepository implements ILaundryRepository {
       .leftJoinAndSelect("laundry.washMachines", "washMachines");
 
     this.setFilters(request, query);
-
-    query.andWhere("laundry.status = :status", {
-      status: StatusEnum.ATIVO,
-    });
 
     return await query.getMany();
   }
@@ -84,6 +101,11 @@ export class LaundryRepository implements ILaundryRepository {
     if (request.responsibleId) {
       query.andWhere("laundry.responsible.id = :responsibleId", {
         responsibleId: request.responsibleId,
+      });
+    }
+    if (request.laundryId) {
+      query.andWhere("laundry.id = :laundryId", {
+        laundryId: request.laundryId,
       });
     }
   }
