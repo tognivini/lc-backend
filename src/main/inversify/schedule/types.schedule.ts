@@ -4,4 +4,5 @@ export const TYPES_SCHEDULE = {
   ICreateScheduleUseCase: Symbol.for('ICreateScheduleUseCase'),
   IUpdateScheduleUseCase: Symbol.for('IUpdateScheduleUseCase'),
   IScheduleRepository: Symbol.for('IScheduleRepository'),
+  IGetAvailableHoursUseCase: Symbol.for('IGetAvailableHoursUseCase'),
 }

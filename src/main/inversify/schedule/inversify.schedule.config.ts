@@ -5,6 +5,7 @@ import { ScheduleRepository } from '../../../database/repositories/_index'
 import { 
   CreateScheduleUseCase,
   GetAllSchedulesUseCase, 
+  GetAvailableHoursUseCase, 
   UpdateScheduleUseCase 
 } from '../../../application/useCases/schedule/_index'
 import { TYPES_SCHEDULE } from './types.schedule'
@@ -30,5 +31,9 @@ export const bindingsSchedule = new ContainerModule((bind) => {
   bind<UpdateScheduleUseCase>(TYPES_SCHEDULE.IUpdateScheduleUseCase).to(
     UpdateScheduleUseCase
   )
-  
+
+
+  bind<GetAvailableHoursUseCase>(TYPES_SCHEDULE.IGetAvailableHoursUseCase).to(
+    GetAvailableHoursUseCase
+  )
 })

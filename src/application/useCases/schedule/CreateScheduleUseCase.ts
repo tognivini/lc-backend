@@ -55,6 +55,8 @@ export class CreateScheduleUseCase implements ICreateScheduleUseCase {
     const washMachineFinded = await this._repositoryWashMachine.findById(payload?.washMachine?.id)
     if (!washMachineFinded?.id){
       return badRequest(WashMachineMessages.ERROR_WASH_MACHINE_NOT_FOUND)
+    } else if(washMachineFinded.inOpperation === false){
+      return badRequest(WashMachineMessages.ERROR_WASH_MACHINE_NOT_IN_OPPERATION)
     } else {
       washMachine = washMachineFinded
     }

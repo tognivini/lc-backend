@@ -1,6 +1,6 @@
 import { SituationScheduleEnum } from "../../../domain/enums/baseEnums/_index";
 
-export class GetAllSchedulesDto {
+export class GetAvailableHoursDto {
   public date: Date;
   public startHour: string;
   public endHour?: string;

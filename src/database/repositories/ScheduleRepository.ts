@@ -1,7 +1,7 @@
 import { injectable } from "inversify";
 import { getRepository, SelectQueryBuilder, UpdateResult } from "typeorm";
 
-import { GetAllSchedulesDto } from "../../application/dto/scheduleDto/_index";
+import { GetAllSchedulesDto, GetAvailableHoursDto } from "../../application/dto/scheduleDto/_index";
 import { StatusEnum } from "../../domain/enums/baseEnums/_index";
 import { IScheduleRepository } from "../../domain/interfaces/repositories/database/IScheduleRepository";
 import { ScheduleModel } from "../../models/_index";
@@ -74,5 +74,93 @@ export class ScheduleRepository implements IScheduleRepository {
     )
 
     return await query.getMany()
+  }
+
+  async getAvailableHoursPagging(request: GetAvailableHoursDto): Promise<ScheduleModel[]> {
+    const repo = getRepository(ScheduleModel);
+    const query = repo.createQueryBuilder("schedule")
+    .select(['schedule.startHour'])
+    .innerJoinAndMapOne(
+      'schedule.laundry',
+      'schedule.laundry',
+      'laundry',
+      'laundry.id = schedule.laundry_id'
+    )
+    .innerJoinAndMapOne(
+      'schedule.washMachine',
+      'schedule.washMachine',
+      'washMachine',
+      'washMachine.id = schedule.wash_machine_id'
+    )
+    // .leftJoinAndMapOne(
+    //   'schedule.responsible',
+    //   'schedule.responsible',
+    //   'responsible',
+    //   'responsible.id = schedule.responsible_id'
+    // )
+    // .leftJoinAndMapOne(
+    //   'schedule.client',
+    //   'schedule.client',
+    //   'client',
+    //   'client.id = schedule.client_id'
+    // )
+    
+    // this.setFilterAvailable(request, query);
+    query.where("1=1");
+    query.andWhere("washMachine.inOpperation = true");
+   
+    //local
+    query.andWhere("laundry.id = :laundryId",{
+      laundryId: request.laundryId
+    });
+    query.andWhere("washMachine.id = :washMachineId",{
+      washMachineId: request.washMachineId
+    });
+    
+    //horário
+    query.andWhere("schedule.date = :date",{
+      date: request.date,
+    });
+    // query.andWhere("schedule.startHour != :startHour",{
+    //   startHour: request.startHour,
+    // });
+
+    query.groupBy('schedule.id')
+    query.addGroupBy('laundry.id')
+    query.addGroupBy('washMachine.id')
+    query.addGroupBy('schedule.washMachine')
+    query.addGroupBy('schedule.start_hour')
+
+    query.addOrderBy('schedule.date', 'ASC')
+    query.addOrderBy('schedule.start_hour', 'ASC')
+
+    return await query.getMany()
+  }
+
+  private setFilters(
+    request: GetAvailableHoursDto,
+    query: SelectQueryBuilder<ScheduleModel>
+  ): void {
+    query.where("1=1");
+    if (request.laundryId) {
+      query.andWhere("schedule.id = :laundryId", {
+        laundryId: request.laundryId,
+      });
+    }
+    if (request.washMachineId) {
+      query.andWhere("schedule.id = :washMachineId", {
+        washMachineId: request.washMachineId,
+      });
+    }
+    if (request.responsibleId) {
+      query.andWhere("schedule.responsible.id = :responsibleId", {
+        responsibleId: request.responsibleId,
+      });
+    }
+    if (request.clientId) {
+      query.andWhere("schedule.client.id = :clientId", {
+        clientId: request.clientId,
+      });
+    }
   }
 }
