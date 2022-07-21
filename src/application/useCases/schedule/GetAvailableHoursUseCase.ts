@@ -38,9 +38,9 @@ export class GetAvailableHoursUseCase implements IGetAvailableHoursUseCase {
     });
     let hoursToBeUsed = []
     if(thisDayIs !== 6){
-      hoursToBeUsed.push(CommonDaysEnum)
+      hoursToBeUsed.push(...CommonDaysEnum)
     } else {
-      hoursToBeUsed.push(SturdaysEnum)
+      hoursToBeUsed.push(...SturdaysEnum)
     }
 
     const availableHours = hoursToBeUsed.filter(

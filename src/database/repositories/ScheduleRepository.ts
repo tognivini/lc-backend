@@ -118,12 +118,9 @@ export class ScheduleRepository implements IScheduleRepository {
     });
     
     //horário
-    query.andWhere("schedule.date = :date",{
+    query.andWhere("cast(schedule.date as text) = cast(:date as text)",{
       date: request.date,
     });
-    // query.andWhere("schedule.startHour != :startHour",{
-    //   startHour: request.startHour,
-    // });
 
     query.groupBy('schedule.id')
     query.addGroupBy('laundry.id')
