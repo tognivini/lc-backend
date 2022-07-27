@@ -50,7 +50,9 @@ export class LaundryRepository implements ILaundryRepository {
     await repo.delete(id);
   }
 
-  async getAvailablelaundrys(request: GetAllLaundrysDto): Promise<LaundryModel[]> {
+  async getAvailablelaundrys(
+    request: GetAllLaundrysDto
+  ): Promise<LaundryModel[]> {
     const repo = getRepository(LaundryModel);
     const query = repo
       .createQueryBuilder("laundry")
@@ -84,6 +86,9 @@ export class LaundryRepository implements ILaundryRepository {
       .leftJoinAndSelect("laundry.washMachines", "washMachines");
 
     this.setFilters(request, query);
+
+    query.addOrderBy("laundry.name", "ASC");
+    query.addOrderBy("washMachines.number", "ASC");
 
     return await query.getMany();
   }
