@@ -99,5 +99,10 @@ export class UserRepository implements IUserRepository {
         email: request.email,
       });
     }
+    if (request.permissionType) {
+      query.andWhere("userPermission.type = :permissionType", {
+        permissionType: request.permissionType,
+      });
+    }
   }
 }
