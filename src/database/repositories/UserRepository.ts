@@ -19,7 +19,9 @@ export class UserRepository implements IUserRepository {
   }
 
   async findUserCustom(filter: UserModel): Promise<UserModel> {
-    const query = getRepository(UserModel).createQueryBuilder("user");
+    const query = getRepository(UserModel)
+      .createQueryBuilder("user")
+      .leftJoinAndSelect("user.userPermission", "userPermission");
 
     query.where(filter);
     query.andWhere("user.status = :status", {
@@ -32,10 +34,7 @@ export class UserRepository implements IUserRepository {
   async findByEmail(email: string): Promise<UserModel> {
     const query = getRepository(UserModel)
       .createQueryBuilder("user")
-      .leftJoinAndSelect(
-        "user.userPermission",
-        "userPermission",
-      );
+      .leftJoinAndSelect("user.userPermission", "userPermission");
 
     query.where("user.email = :email", {
       email: email,
@@ -69,7 +68,9 @@ export class UserRepository implements IUserRepository {
 
   async getAllPagging(request: GetAllUsersDto): Promise<UserModel[]> {
     const repo = getRepository(UserModel);
-    const query = repo.createQueryBuilder("user");
+    const query = repo
+      .createQueryBuilder("user")
+      .leftJoinAndSelect("user.userPermission", "userPermission");
     this.setFilters(request, query);
 
     return query.getMany();

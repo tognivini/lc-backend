@@ -25,7 +25,7 @@ export class GetAvailableHoursUseCase implements IGetAvailableHoursUseCase {
     if (!(request?.laundryId && request?.washMachineId && request?.date)) {
       return badRequest(ScheduleMessages.ERROR_SCHEDULE_INFORMATIONS_NEED);
     }
-      const thisDayIs = getDay(new Date(request.date));
+    const thisDayIs = getDay(new Date(request.date));
     if(thisDayIs === 0){
       return badRequest(ScheduleMessages.ERROR_DATE_SCHEDULE_CLOSED);
     }
@@ -36,6 +36,7 @@ export class GetAvailableHoursUseCase implements IGetAvailableHoursUseCase {
     schedulesThatAlreadyExists.filter((schedule) => {
       notAvailableHours.push(schedule.startHour);
     });
+
     let hoursToBeUsed = []
     if(thisDayIs !== 6){
       hoursToBeUsed.push(...CommonDaysEnum)

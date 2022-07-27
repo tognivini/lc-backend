@@ -42,6 +42,7 @@ export class UpdateLaundryUseCase implements IUpdateLaundryUseCase {
 
     laundryFinded.name =  payload.name
     laundryFinded.address =  payload.address
+    laundryFinded.cep = payload.cep
     //verificar se usuário é bolsista
     if(payload?.responsible){
       laundryFinded.responsible = responsible

@@ -12,6 +12,9 @@ export class LaundryModel extends ModelBase {
   @Column({ name: "address", nullable: false })
   address: string;
 
+  @Column({ name: "cep", nullable: false })
+  cep: string;
+
   @OneToOne(() => UserModel, { nullable: true })
   @JoinColumn({ name: 'responsible_id'})
   responsible: UserModel
