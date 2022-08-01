@@ -26,9 +26,9 @@ export class GetAvailableHoursUseCase implements IGetAvailableHoursUseCase {
       return badRequest(ScheduleMessages.ERROR_SCHEDULE_INFORMATIONS_NEED);
     }
     const thisDayIs = getDay(new Date(request.date));
-    if(thisDayIs === 0){
-      return badRequest(ScheduleMessages.ERROR_DATE_SCHEDULE_CLOSED);
-    }
+    // if(thisDayIs === 0){
+    //   return badRequest(ScheduleMessages.ERROR_DATE_SCHEDULE_CLOSED);
+    // }
     const schedulesThatAlreadyExists =
       await this._scheduleRepository.getAvailableHoursPagging(request);
 

@@ -73,7 +73,53 @@ export class ScheduleRepository implements IScheduleRepository {
       'client.id = schedule.client_id'
     )
 
+    this.setFilters(request, query);
+
+    query.groupBy('schedule.id')
+    query.addGroupBy('laundry.id')
+    query.addGroupBy('washMachine.id')
+    query.addGroupBy('responsible.id')
+    query.addGroupBy('client.id')
+    query.addGroupBy('schedule.washMachine')
+    query.addGroupBy('schedule.start_hour')
+
+    query.addOrderBy('schedule.date', 'ASC')
+    query.addOrderBy('schedule.start_hour', 'ASC')
+
     return await query.getMany()
+  }
+
+  private setFilters(
+    request: GetAllSchedulesDto,
+    query: SelectQueryBuilder<ScheduleModel>
+  ): void {
+    query.where("1=1");
+    if (request.laundryId) {
+      query.andWhere("schedule.id = :laundryId", {
+        laundryId: request.laundryId,
+      });
+    }
+    if (request.washMachineId) {
+      query.andWhere("schedule.id = :washMachineId", {
+        washMachineId: request.washMachineId,
+      });
+    }
+    if (request.responsibleId) {
+      query.andWhere("schedule.responsible.id = :responsibleId", {
+        responsibleId: request.responsibleId,
+      });
+    }
+    if (request.clientId) {
+      query.andWhere("schedule.client.id = :clientId", {
+        clientId: request.clientId,
+      });
+    }
+    if (request.date) {
+      query.andWhere("cast(schedule.date as text) = cast(:date as text)",{
+        date: request.date,
+      });
+    }
+    
   }
 
   async getAvailableHoursPagging(request: GetAvailableHoursDto): Promise<ScheduleModel[]> {
@@ -134,30 +180,5 @@ export class ScheduleRepository implements IScheduleRepository {
     return await query.getMany()
   }
 
-  private setFilters(
-    request: GetAvailableHoursDto,
-    query: SelectQueryBuilder<ScheduleModel>
-  ): void {
-    query.where("1=1");
-    if (request.laundryId) {
-      query.andWhere("schedule.id = :laundryId", {
-        laundryId: request.laundryId,
-      });
-    }
-    if (request.washMachineId) {
-      query.andWhere("schedule.id = :washMachineId", {
-        washMachineId: request.washMachineId,
-      });
-    }
-    if (request.responsibleId) {
-      query.andWhere("schedule.responsible.id = :responsibleId", {
-        responsibleId: request.responsibleId,
-      });
-    }
-    if (request.clientId) {
-      query.andWhere("schedule.client.id = :clientId", {
-        clientId: request.clientId,
-      });
-    }
-  }
+
 }
