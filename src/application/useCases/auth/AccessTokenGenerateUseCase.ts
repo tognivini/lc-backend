@@ -23,7 +23,7 @@ export class AccessTokenGenerateUseCase implements IAccessTokenGenerateUseCase {
     return this._tokenJWTGenerateUseCase.execute<IAccessTokenData>(
       {
         userId: user.id,
-        permissionType: user.userPermission.type,
+        permissionType: user.userPermission.userType,
       },
       process.env.JWT_KEY,
       {

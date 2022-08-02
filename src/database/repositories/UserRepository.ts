@@ -1,3 +1,5 @@
+import { UserPermissionsModel } from './../../models/UserPermissionsModel';
+import { UpdateUserDto } from './../../application/dto/userDto/UpdateUserDto';
 import { injectable } from "inversify";
 import { getRepository, SelectQueryBuilder, UpdateResult } from "typeorm";
 
@@ -6,7 +8,7 @@ import { StatusEnum } from "../../domain/enums/baseEnums/_index";
 import { IUserRepository } from "../../domain/interfaces/repositories/database/IUserRepository";
 import { UserModel } from "../../models/_index";
 import { DateUtils } from "../../utils/commons/utils/_index";
-
+import { getConnection } from 'typeorm'
 @injectable()
 export class UserRepository implements IUserRepository {
   getAll(filters: UserModel): Promise<UserModel[]> {
@@ -54,11 +56,6 @@ export class UserRepository implements IUserRepository {
     data.updatedAt = DateUtils.now();
     await getRepository(UserModel).save({ id, ...data });
     return data;
-    // const user = await this.findUserCustom(<UserModel>{ id: id })
-    // return getRepository(UserModel).save({
-    //   ...user, // existing fields
-    //   ...data // updated fields
-    // });
   }
 
   async delete(id: string): Promise<void> {
@@ -100,9 +97,28 @@ export class UserRepository implements IUserRepository {
       });
     }
     if (request.permissionType) {
-      query.andWhere("userPermission.type = :permissionType", {
+      query.andWhere("userPermission.userType = :permissionType", {
         permissionType: request.permissionType,
       });
     }
+  }
+
+
+  async updateCustomRawUserPermission(
+    dto: UpdateUserDto
+  ): Promise<UserPermissionsModel> {
+    console.log('func', dto)
+    const connect = getConnection()
+    const [query, parameters] = await connect.driver.escapeQueryWithParameters(
+      `UPDATE user_permissions SET user_type = ${dto.userType && ':userType'}
+      WHERE user_permissions.id = ${dto.permissionId && ':permissionId'};`,
+      {
+        userType: dto?.userType,
+        permissionId: dto?.permissionId,
+      },
+      {}
+    )
+    const result = await connect.query(query, parameters)
+    return result[0]
   }
 }
