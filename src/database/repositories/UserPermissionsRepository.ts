@@ -60,7 +60,6 @@ export class UserPermissionsRepository implements IUserPermissionsRepository {
   async updateCustomRaw(
     dto: UpdateUserDto
   ): Promise<UserPermissionsModel> {
-    console.log('func', dto)
     const connect = getConnection()
     const [query, parameters] = await connect.driver.escapeQueryWithParameters(
       `UPDATE user_permissions SET user_type = ${dto.userType && ':userType)'}

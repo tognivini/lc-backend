@@ -8,6 +8,10 @@ export interface IUserRepository extends IBaseRepository<UserModel> {
   getAllPagging(request: GetAllUsersDto): Promise<UserModel[]>;
   delete(id: string): Promise<void>;
 
+  findById(id: string): Promise<UserModel>;
+
+  findByIdAll(id: string): Promise<UserModel>;
+
   findByEmail(email: string): Promise<UserModel>;
 
   updateCustomRawUserPermission(

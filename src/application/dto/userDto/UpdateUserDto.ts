@@ -1,3 +1,4 @@
+import { StatusEnum } from './../../../domain/enums/baseEnums/StatusEnum';
 import { PermissionsTypeEnum } from "../../../domain/enums/baseEnums/PermissionsTypeEnum";
 
 export class UpdateUserDto {
@@ -7,4 +8,5 @@ export class UpdateUserDto {
   public password?: string;
   public userType?: PermissionsTypeEnum;
   public permissionId?: string;
+  public status?: StatusEnum;
 }

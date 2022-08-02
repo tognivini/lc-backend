@@ -32,6 +32,21 @@ export class UserRepository implements IUserRepository {
     return await query.getOne();
   }
 
+  async findByIdAll(id: string): Promise<UserModel> {
+    if (!id) return null;
+
+    return await this.findUserCustomAll(<UserModel>{ id: id });
+  }
+
+  async findUserCustomAll(filter: UserModel): Promise<UserModel> {
+    const query = getRepository(UserModel)
+      .createQueryBuilder("user")
+      .leftJoinAndSelect("user.userPermission", "userPermission");
+
+    query.where(filter);
+    return await query.getOne();
+  }
+
   //only used to get user on login
   async findByEmail(email: string): Promise<UserModel> {
     const query = getRepository(UserModel)
@@ -107,7 +122,6 @@ export class UserRepository implements IUserRepository {
   async updateCustomRawUserPermission(
     dto: UpdateUserDto
   ): Promise<UserPermissionsModel> {
-    console.log('func', dto)
     const connect = getConnection()
     const [query, parameters] = await connect.driver.escapeQueryWithParameters(
       `UPDATE user_permissions SET user_type = ${dto.userType && ':userType'}

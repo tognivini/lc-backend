@@ -2,9 +2,7 @@ import { UserModel, UserPermissionsModel } from "./../../../models/_index";
 import { inject, injectable } from "inversify";
 
 import { UpdateUserDto } from "../../../application/dto/userDto/_index";
-import {
-  IUserRepository,
-} from "../../../domain/interfaces/repositories/database/_index";
+import { IUserRepository } from "../../../domain/interfaces/repositories/database/_index";
 import { IUpdateUserUseCase } from "../../../domain/interfaces/useCases/user/IUpdateUserUseCase";
 import { TYPES_USER } from "../../../main/inversify/types";
 import { ok, badRequest } from "../../../utils/commons/http/HttpHelper";
@@ -14,14 +12,14 @@ import { HttpResponse } from "../../../utils/commons/protocols/Http";
 export class UpdateUserUseCase implements IUpdateUserUseCase {
   constructor(
     @inject(TYPES_USER.IUserRepository)
-    private readonly _repositoryUser: IUserRepository,
+    private readonly _repositoryUser: IUserRepository
   ) {}
 
   async execute(
     id: string,
     dto: UpdateUserDto
   ): Promise<HttpResponse<UserModel>> {
-    const userFinded = await this._repositoryUser.findById(id);
+    const userFinded = await this._repositoryUser.findByIdAll(id);
     if (!userFinded?.id) {
       return badRequest(UserMessages.ERROR_USER_NOT_FOUND);
     }
@@ -30,6 +28,7 @@ export class UpdateUserUseCase implements IUpdateUserUseCase {
     userFinded.phoneNumber = dto.phoneNumber;
     userFinded.name = dto.name;
     userFinded.password = dto.password;
+    userFinded.status = dto.status;
 
     await this._repositoryUser.update(id, userFinded);
 
@@ -37,11 +36,9 @@ export class UpdateUserUseCase implements IUpdateUserUseCase {
       const permissionId = userFinded.userPermission.id;
       const dtoo = {
         permissionId,
-        userType: dto.userType
-      }
-      await this._repositoryUser.updateCustomRawUserPermission(
-        dtoo
-      );
+        userType: dto.userType,
+      };
+      await this._repositoryUser.updateCustomRawUserPermission(dtoo);
     }
 
     return ok(userFinded);
