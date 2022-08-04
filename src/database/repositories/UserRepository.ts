@@ -3,7 +3,7 @@ import { UpdateUserDto } from "./../../application/dto/userDto/UpdateUserDto";
 import { injectable } from "inversify";
 import { getRepository, SelectQueryBuilder, UpdateResult } from "typeorm";
 
-import { GetAllUsersDto } from "../../application/dto/userDto/_index";
+import { GetAllUsersDto, GetResponsiblesDto } from "../../application/dto/userDto/_index";
 import {
   PermissionsTypeEnum,
   StatusEnum,
@@ -121,11 +121,12 @@ export class UserRepository implements IUserRepository {
     }
   }
 
-  async getResponsibles(request: GetAllUsersDto): Promise<UserModel[]> {
+  async getResponsibles(request: GetResponsiblesDto): Promise<UserModel[]> {
     const repo = getRepository(UserModel);
     const query = repo
       .createQueryBuilder("user")
       .leftJoinAndSelect("user.userPermission", "userPermission")
+      .leftJoinAndSelect("user.laundry", "laundry")
 
     this.setFiltersResponsibles(request, query);
 
@@ -133,7 +134,7 @@ export class UserRepository implements IUserRepository {
   }
 
   private setFiltersResponsibles(
-    request: GetAllUsersDto,
+    request: GetResponsiblesDto,
     query: SelectQueryBuilder<UserModel>
   ): void {
     query.where("1 = 1");
@@ -155,10 +156,14 @@ export class UserRepository implements IUserRepository {
         email: request.email,
       });
     }
+
+    if(request.onlyAvailableResponsibles){
+      query.andWhere(`laundry is NULL`);
+    }
+
     query.andWhere(
       `userPermission.userType = '${PermissionsTypeEnum.BOLSISTA}'`
     );
-
     query.andWhere(`userPermission.userType != '${PermissionsTypeEnum.ADMIN}'`);
   }
 

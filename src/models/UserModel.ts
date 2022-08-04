@@ -1,3 +1,4 @@
+import { LaundryModel } from './LaundryModel';
 import { UserPermissionsModel } from './UserPermissionsModel';
 import { Entity, Column, OneToOne, ManyToMany, OneToMany } from "typeorm";
 import { ModelBase } from "./base/ModelBase";
@@ -30,5 +31,8 @@ export class UserModel extends ModelBase {
 
   @OneToOne(() => UserPermissionsModel, (userPermission) => userPermission.user)
   userPermission: UserPermissionsModel
+
+  @OneToMany(() => LaundryModel, (laundry) => laundry.responsible)
+  laundry: LaundryModel[]
 }
 
