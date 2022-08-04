@@ -4,5 +4,6 @@ export const TYPES_USER = {
   ICreateUserUseCase: Symbol.for('ICreateUserUseCase'),
   IUpdateUserUseCase: Symbol.for('IUpdateUserUseCase'),
   IUserRepository: Symbol.for('IUserRepository'),
-  IDeleteUserUseCase: Symbol.for('IDeleteUserUseCase')
+  IDeleteUserUseCase: Symbol.for('IDeleteUserUseCase'),
+  IGetResponsiblesUseCase: Symbol.for('IGetResponsiblesUseCase')
 }
