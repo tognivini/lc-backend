@@ -1,3 +1,5 @@
-export * from './IGetAllSchedulesUseCase'
 export * from './ICreateScheduleUseCase'
+export * from './IGetAllSchedulesUseCase'
 export * from './IUpdateScheduleUseCase'
+export * from './IUpdateScheduleUseCase'
+export * from './IGetAvailableHoursUseCase'

@@ -1,3 +1,5 @@
+import { LaundryModel } from './LaundryModel';
+import { UserPermissionsModel } from './UserPermissionsModel';
 import { Entity, Column, OneToOne, ManyToMany, OneToMany } from "typeorm";
 import { ModelBase } from "./base/ModelBase";
 import { EncryptionTransformer } from "typeorm-encrypted";
@@ -26,5 +28,11 @@ export class UserModel extends ModelBase {
 
   @OneToMany(() => ScheduleModel, (schedule) => schedule.laundry)
   schedule: ScheduleModel[]
+
+  @OneToOne(() => UserPermissionsModel, (userPermission) => userPermission.user)
+  userPermission: UserPermissionsModel
+
+  @OneToMany(() => LaundryModel, (laundry) => laundry.responsible)
+  laundry: LaundryModel[]
 }
 

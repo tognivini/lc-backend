@@ -11,8 +11,7 @@ import {
   response,
 } from "inversify-express-utils";
 
-import { IUpdateUserUseCase } from "../domain/interfaces/useCases/user/IUpdateUserUseCase";
-import { ICreateUserUseCase, IDeleteUserUseCase, IGetAllUsersUseCase } from "../domain/interfaces/useCases/user/_index";
+import { ICreateUserUseCase, IDeleteUserUseCase, IGetAllUsersUseCase, IUpdateUserUseCase, IGetResponsiblesUseCase } from "../domain/interfaces/useCases/user/_index";
 import { TYPES_USER } from "../main/inversify/types";
 // import { RequestFilter } from '../../utils/commons/helpers/protocols/Http'
 // import { AUTHORIZATION } from '../../utils/commons/resources/constants/AuthorizationScopes'
@@ -24,6 +23,9 @@ export class UserController {
   constructor(
     @inject(TYPES_USER.IGetAllUsersUseCase)
     private _getAllUsers: IGetAllUsersUseCase,
+
+    @inject(TYPES_USER.IGetResponsiblesUseCase)
+    private _getResponsiblesUsers: IGetResponsiblesUseCase,
 
     @inject(TYPES_USER.ICreateUserUseCase)
     private _createUser: ICreateUserUseCase,
@@ -43,6 +45,18 @@ export class UserController {
     ) {
       try {
         return await this._getAllUsers.execute(req.query);
+    } catch (error) {
+      return error;
+    }
+  }
+
+  @httpGet("/responsibles")
+  private async getResponsibles(
+    @request() req: express.Request,
+    @response() res: express.Response
+    ) {
+      try {
+        return await this._getResponsiblesUsers.execute(req.query);
     } catch (error) {
       return error;
     }

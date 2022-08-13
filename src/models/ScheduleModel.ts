@@ -7,8 +7,8 @@ import { UserModel } from "./UserModel";
 
 @Entity("schedule")
 export class ScheduleModel extends ModelBase {
-  @CreateDateColumn({ type: 'timestamptz', name: 'date' })
-  date: Date
+  @CreateDateColumn({ name: 'date', nullable: false })
+  date: string
 
   @Column({ name: "start_hour", nullable: false })
   startHour: string;

@@ -15,10 +15,10 @@ export class WashMachineRepository implements IWashMachineRepository {
   async findById(id: string): Promise<WashMachineModel> {
     if (!id) return null;
 
-    return await this.findUserCustom(<WashMachineModel>{ id: id });
+    return await this.findWashMachineCustom(<WashMachineModel>{ id: id });
   }
 
-  async findUserCustom(filter: WashMachineModel): Promise<WashMachineModel> {
+  async findWashMachineCustom(filter: WashMachineModel): Promise<WashMachineModel> {
     const query = getRepository(WashMachineModel).createQueryBuilder("wash_machine");
 
     query.where(filter);
@@ -48,7 +48,33 @@ export class WashMachineRepository implements IWashMachineRepository {
   async getAllPagging(request: GetAllWashMachinesDto): Promise<WashMachineModel[]> {
     const repo = getRepository(WashMachineModel);
     const query = repo.createQueryBuilder("wash_machine")
+    .leftJoinAndMapOne(
+      "wash_machine.laundry",
+      "wash_machine.laundry",
+      "laundry",
+      "laundry.id = wash_machine.laundry_id"
+    )
+
+    this.setFilters(request, query);
 
     return query.getMany();
+  }
+
+  private setFilters(
+    request: GetAllWashMachinesDto,
+    query: SelectQueryBuilder<WashMachineModel>
+  ): void {
+    query.where("1=1");
+    if (request.washMachineId) {
+      query.andWhere("wash_machine.id = :washMachineId", {
+        washMachineId: request.washMachineId,
+      });
+    }
+   
+    if (request.laundryId) {
+      query.andWhere("laundry.id = :laundryId", {
+        laundryId: request.laundryId,
+      });
+    }
   }
 }

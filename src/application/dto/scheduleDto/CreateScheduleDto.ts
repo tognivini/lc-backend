@@ -3,7 +3,7 @@ import { UserModel } from "../../../models/UserModel";
 import { LaundryModel, WashMachineModel } from "../../../models/_index";
 
 export class CreateScheduleDto {
-  public date: Date;
+  public date: string;
   public startHour: string;
   public endHour?: string;
   public situation?: SituationScheduleEnum;

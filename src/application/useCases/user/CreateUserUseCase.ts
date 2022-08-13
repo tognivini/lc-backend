@@ -32,7 +32,7 @@ export class CreateUserUseCase implements ICreateUserUseCase {
 
     const userPermissions = new UserPermissionsModel()
     userPermissions.user = userInserted
-    userPermissions.type = PermissionsTypeEnum.CLIENTE
+    userPermissions.userType = PermissionsTypeEnum.CLIENTE
 
     await this._repositoryUserPermissions.add(userPermissions)
     return ok(userInserted)

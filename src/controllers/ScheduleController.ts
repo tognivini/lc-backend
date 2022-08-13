@@ -14,6 +14,7 @@ import {
 import { 
   ICreateScheduleUseCase, 
   IGetAllSchedulesUseCase, 
+  IGetAvailableHoursUseCase, 
   IUpdateScheduleUseCase
 } from "../domain/interfaces/useCases/schedule/_index";
 import { TYPES_SCHEDULE } from "../main/inversify/types";
@@ -33,6 +34,9 @@ export class ScheduleController {
 
     @inject(TYPES_SCHEDULE.IUpdateScheduleUseCase)
     private _updateSchedule: IUpdateScheduleUseCase,
+
+    @inject(TYPES_SCHEDULE.IGetAvailableHoursUseCase)
+    private _getAvailableHours: IGetAvailableHoursUseCase,
   ) {}
   
   @httpGet("/")
@@ -42,6 +46,18 @@ export class ScheduleController {
     ) {
       try {
         return await this._getAllSchedules.execute(req.query);
+    } catch (error) {
+      return error;
+    }
+  }
+
+  @httpGet("/get-available-hours")
+  private async getAvailableHours(
+    @request() req: express.Request,
+    @response() res: express.Response
+    ) {
+      try {
+        return await this._getAvailableHours.execute(req.query);
     } catch (error) {
       return error;
     }

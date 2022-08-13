@@ -10,6 +10,9 @@ import { HttpResponse } from '../../../utils/commons/protocols/Http';
 import { SituationScheduleEnum } from './../../../domain/enums/baseEnums/SituationScheduleEnum';
 import { badRequest, ok } from '../../../utils/commons/http/HttpHelper'
 import { LaundryMessages, UserMessages, WashMachineMessages } from '../../../utils/commons/messages/_index'
+import { parseISO } from "date-fns";
+import { format } from "date-fns-tz";
+
 @injectable()
 export class CreateScheduleUseCase implements ICreateScheduleUseCase {
   constructor(
@@ -55,6 +58,8 @@ export class CreateScheduleUseCase implements ICreateScheduleUseCase {
     const washMachineFinded = await this._repositoryWashMachine.findById(payload?.washMachine?.id)
     if (!washMachineFinded?.id){
       return badRequest(WashMachineMessages.ERROR_WASH_MACHINE_NOT_FOUND)
+    } else if(washMachineFinded.inOpperation === false){
+      return badRequest(WashMachineMessages.ERROR_WASH_MACHINE_NOT_IN_OPPERATION)
     } else {
       washMachine = washMachineFinded
     }
@@ -62,7 +67,11 @@ export class CreateScheduleUseCase implements ICreateScheduleUseCase {
     
     const schedule = new ScheduleModel()
     
-    schedule.date = payload.date
+    const parsedTime = parseISO(payload?.date);
+   
+    const formattedTime = format(parsedTime, "yyyy-MM-dd");
+    
+    schedule.date = formattedTime
     schedule.startHour = payload.startHour
     schedule.endHour = payload.endHour
     schedule.situation = SituationScheduleEnum.NAO_INICIADO

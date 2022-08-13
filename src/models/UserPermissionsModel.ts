@@ -5,15 +5,15 @@ import { UserModel } from "./UserModel";
 
 @Entity("user_permissions")
 export class UserPermissionsModel extends ModelBase {
-  @OneToOne(() => UserModel,  { cascade: true, onDelete: 'CASCADE' })
+  @OneToOne(() => UserModel, { nullable: true })
   @JoinColumn({ name: 'user_id' })
   user: UserModel
 
   @Column({
     type: "varchar",
     nullable: true,
-    name: "type",
+    name: "user_type",
   })
-  type: PermissionsTypeEnum;
+  userType: PermissionsTypeEnum;
 }
 

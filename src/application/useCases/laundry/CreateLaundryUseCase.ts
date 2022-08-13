@@ -37,6 +37,7 @@ export class CreateLaundryUseCase implements ICreateLaundryUseCase {
     
     laundry.name = payload.name
     laundry.address = payload.address
+    laundry.cep = payload.cep
     laundry.responsible = responsible
     const laundryInserted = await this._repositoryLaundry.add(laundry)
 
