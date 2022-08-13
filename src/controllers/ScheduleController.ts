@@ -51,13 +51,13 @@ export class ScheduleController {
     }
   }
 
-  @httpPost("/get-available-hours")
+  @httpGet("/get-available-hours")
   private async getAvailableHours(
     @request() req: express.Request,
     @response() res: express.Response
     ) {
       try {
-        return await this._getAvailableHours.execute(req.body);
+        return await this._getAvailableHours.execute(req.query);
     } catch (error) {
       return error;
     }
