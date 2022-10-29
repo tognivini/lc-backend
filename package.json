@@ -19,6 +19,7 @@
       "inversify": "^6.0.1",
       "inversify-express-utils": "^6.4.3",
       "jsonwebtoken": "^8.5.1",
+      "nodemon": "^2.0.20",
       "pg": "^8.4.0",
       "reflect-metadata": "^0.1.13",
       "typeorm": "0.3.6",
@@ -26,6 +27,7 @@
    },
    "scripts": {
       "start": "ts-node src/index.ts",
+      "start:dev": "nodemon src/index.ts",
       "typeorm": "typeorm-ts-node-commonjs",
       "migration:create": "npm run typeorm migration:create -- -n",
       "migration:generate": "npm run typeorm migration:generate -- -n",
