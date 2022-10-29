@@ -13,10 +13,7 @@ import {
 
 import { ICreateUserUseCase, IDeleteUserUseCase, IGetAllUsersUseCase, IUpdateUserUseCase, IGetResponsiblesUseCase } from "../domain/interfaces/useCases/user/_index";
 import { TYPES_USER } from "../main/inversify/types";
-// import { RequestFilter } from '../../utils/commons/helpers/protocols/Http'
-// import { AUTHORIZATION } from '../../utils/commons/resources/constants/AuthorizationScopes'
-// import { AdaptResponse } from '../adapters/AdaptHttpResponse'
-// import { authorization } from '../middlewares/AuthorizationMiddleware'
+import { authorization } from "../middlewares/AuthorizationMiddleware";
 
 @controller("/api/user")
 export class UserController {
@@ -38,7 +35,7 @@ export class UserController {
 
   ) {}
   
-  @httpGet("/")
+  @httpGet("/", authorization())
   private async getAll(
     @request() req: express.Request,
     @response() res: express.Response
@@ -71,7 +68,7 @@ export class UserController {
     }
   }
 
-  @httpPut('/update/:id')
+  @httpPut('/update/:id', authorization())
   private async update(@request() req: Request, @response() res: Response) {
     try {
       const { id } = req.params
@@ -82,7 +79,7 @@ export class UserController {
     }
   }
 
-  @httpDelete('/delete/:id')
+  @httpDelete('/delete/:id', authorization())
   private async delete(@request() req: Request, @response() res: Response) {
     try {
       const { id } = req.params
@@ -91,21 +88,4 @@ export class UserController {
       return error
     }
   }
-
-
-  // @httpGet('/', (''))
-  // private async getAll(
-  //   @request() req,
-  //   @response() res: Response
-  // ) {
-  //   try {
-  //     console.log('___entrando controller___')
-  //     return new (res).adaptQuery(
-  //       await this._getAllUsers.execute(req.query)
-  //     )
-  //   } catch (error) {
-  //     return new (res).adaptError(error)
-  //   }
-  // }
- 
 }

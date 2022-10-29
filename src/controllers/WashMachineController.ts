@@ -1,26 +1,24 @@
 import * as express from "express";
-import { Request, Response } from 'express'
+import { Request, Response } from "express";
 import { inject } from "inversify";
 import {
   controller,
-  httpDelete,
+  // httpDelete,
   httpGet,
   httpPost,
   httpPut,
   request,
   response,
 } from "inversify-express-utils";
+import { PermissionTypeEnum } from "../domain/enums/userEnums/PermissionTypeEnum";
 
-import { 
-  ICreateWashMachineUseCase, 
-  IGetAllWashMachinesUseCase, 
-  IUpdateWashMachineUseCase
+import {
+  ICreateWashMachineUseCase,
+  IGetAllWashMachinesUseCase,
+  IUpdateWashMachineUseCase,
 } from "../domain/interfaces/useCases/washMachine/_index";
 import { TYPES_WASH_MACHINE } from "../main/inversify/types";
-// import { RequestFilter } from '../../utils/commons/helpers/protocols/Http'
-// import { AUTHORIZATION } from '../../utils/commons/resources/constants/AuthorizationScopes'
-// import { AdaptResponse } from '../adapters/AdaptHttpResponse'
-// import { authorization } from '../middlewares/AuthorizationMiddleware'
+import { authorization } from "../middlewares/AuthorizationMiddleware";
 
 @controller("/api/wash-machine")
 export class WashMachineController {
@@ -32,38 +30,37 @@ export class WashMachineController {
     private _createWashMachine: ICreateWashMachineUseCase,
 
     @inject(TYPES_WASH_MACHINE.IUpdateWashMachineUseCase)
-    private _updateWashMachine: IUpdateWashMachineUseCase,
+    private _updateWashMachine: IUpdateWashMachineUseCase
   ) {}
-  
-  @httpGet("/")
+
+  @httpGet("/", authorization())
   private async getAll(
     @request() req: express.Request,
     @response() res: express.Response
-    ) {
-      try {
-        return await this._getAllWashMachines.execute(req.query);
+  ) {
+    try {
+      return await this._getAllWashMachines.execute(req.query);
     } catch (error) {
       return error;
     }
   }
 
-  @httpPost('/create')
+  @httpPost("/create", authorization(PermissionTypeEnum.ADMIN))
   private async create(@request() req: Request, @response() res: Response) {
     try {
-      return await this._createWashMachine.execute(req.body)
+      return await this._createWashMachine.execute(req.body);
     } catch (error) {
-      return error
+      return error;
     }
   }
 
-  @httpPut('/update/:id')
+  @httpPut("/update/:id", authorization(PermissionTypeEnum.ADMIN))
   private async update(@request() req: Request, @response() res: Response) {
     try {
-      const { id } = req.params
-      return await this._updateWashMachine.execute(id, req.body)
-      
+      const { id } = req.params;
+      return await this._updateWashMachine.execute(id, req.body);
     } catch (error) {
-      return error
+      return error;
     }
   }
 }

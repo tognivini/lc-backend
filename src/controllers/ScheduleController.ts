@@ -3,7 +3,7 @@ import { Request, Response } from 'express'
 import { inject } from "inversify";
 import {
   controller,
-  httpDelete,
+  // httpDelete,
   httpGet,
   httpPost,
   httpPut,
@@ -18,10 +18,7 @@ import {
   IUpdateScheduleUseCase
 } from "../domain/interfaces/useCases/schedule/_index";
 import { TYPES_SCHEDULE } from "../main/inversify/types";
-// import { RequestFilter } from '../../utils/commons/helpers/protocols/Http'
-// import { AUTHORIZATION } from '../../utils/commons/resources/constants/AuthorizationScopes'
-// import { AdaptResponse } from '../adapters/AdaptHttpResponse'
-// import { authorization } from '../middlewares/AuthorizationMiddleware'
+import { authorization } from "../middlewares/AuthorizationMiddleware";
 
 @controller("/api/schedule")
 export class ScheduleController {
@@ -39,7 +36,7 @@ export class ScheduleController {
     private _getAvailableHours: IGetAvailableHoursUseCase,
   ) {}
   
-  @httpGet("/")
+  @httpGet("/", authorization())
   private async getAll(
     @request() req: express.Request,
     @response() res: express.Response
@@ -51,7 +48,7 @@ export class ScheduleController {
     }
   }
 
-  @httpGet("/get-available-hours")
+  @httpGet("/get-available-hours", authorization())
   private async getAvailableHours(
     @request() req: express.Request,
     @response() res: express.Response
@@ -63,7 +60,7 @@ export class ScheduleController {
     }
   }
 
-  @httpPost('/create')
+  @httpPost('/create', authorization())
   private async create(@request() req: Request, @response() res: Response) {
     try {
       return await this._createSchedule.execute(req.body)
@@ -72,7 +69,7 @@ export class ScheduleController {
     }
   }
 
-  @httpPut('/update/:id')
+  @httpPut('/update/:id', authorization())
   private async update(@request() req: Request, @response() res: Response) {
     try {
       const { id } = req.params
