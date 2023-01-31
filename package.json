@@ -29,9 +29,8 @@
       "start": "ts-node src/index.ts",
       "start:dev": "nodemon src/index.ts",
       "typeorm": "typeorm-ts-node-commonjs",
-      "migration:create": "npm run typeorm migration:create -- -n",
-      "migration:generate": "npm run typeorm migration:generate -- -n",
-      "migration:run": "npm run typeorm migration:run",
-      "migration:revert": "npm run typeorm migration:revert"
+      "migration:generate": "npx typeorm-ts-node-esm migration:run -d ./src/data-source.ts",
+      "migration:run": "npx typeorm-ts-node-esm migration:run -d ./src/data-source.ts",
+      "migration:revert": "npx typeorm-ts-node-esm migration:revert -d ./src/data-source.ts"
    }
 }
